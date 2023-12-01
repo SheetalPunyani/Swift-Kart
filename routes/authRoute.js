@@ -21,4 +21,18 @@ router.post("/login", loginController);
 router.get("/test", requireSignIn, isAdmin, testController);
 //url ke baad or controller se pehle kitne bhi middleware create kr k  add kr sakte h.
 
+//protected user route auth.
+router.get("/user-auth", requireSignIn, (req, res) => {
+	res.status(200).send({
+		ok: true,
+	});
+});
+
+//protected admin route
+router.get("/admin-auth", requireSignIn, isAdmin, (req, res) => {
+	res.status(200).send({
+		ok: true,
+	});
+});
+
 export default router;

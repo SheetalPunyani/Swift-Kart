@@ -1,6 +1,6 @@
 //making this also fntional component by rafce.react arrow fn. with export (rafce) is a shortcut to create a functional component.
 import React from "react";
-import Layout from "./../components/Layout/Layout";
+import Layout from "../components/Layout/Layout";
 
 const Policy = () => {
 	return (

@@ -4,32 +4,31 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../styles/AuthStyles.css";
-const Register = () => {
-	const [name, setName] = useState("");
+import { useAuth } from "../../Context/auth";
+
+const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [phone, setPhone] = useState("");
-	const [address, setAddress] = useState("");
-	const navigate = useNavigate();
-	// useNavigate ek hook hait to iska variable bananapadega.
+	const [auth, setAuth] = useAuth();
 
-	// form function
+	const navigate = useNavigate();
+	// login m srif email and password usehoga.
 	const handleSubmit = async (e) => {
 		e.preventDefault(); //prevent default behaviour of form i.e. refresh(for keeping apllicaton single page) e stands for event jisko humtarget kree h iss fn. m.
 		//to send the data were getting to the server we use axios.http client ka agar humko react m use krna h to best package h axios.
 		// axios se hum server se data get kr skte h.axios se hum backend me jo data h usko get krste h post krskte h update krste h and etc.react-toastify se toast notification show krte h.
 		// axios k help se network request bhejenge
 		try {
-			const res = await axios.post("/api/v1/auth/register", {
-				name,
+			const res = await axios.post("/api/v1/auth/login", {
 				email,
 				password,
-				phone,
-				address,
 			});
 			if (res && res.data.success) {
-				toast.success(res.data.message);
-				navigate("/login");
+				toast.success(res.data && res.data.message);
+				setAuth({ ...auth, user: res.data.user, token: res.data.token });
+				//using localstorage to store the info after login(after refreshed the page the user should be logged in)
+				localStorage.setItem("auth", JSON.stringify(res.data));
+				navigate("/");
 			} else {
 				toast.error(res.data.message);
 			}
@@ -38,24 +37,12 @@ const Register = () => {
 			toast.error("Something went wrong");
 		}
 	};
-
 	return (
 		<Layout title='Register - Ecommer App'>
 			<div className='form-container '>
 				<form onSubmit={handleSubmit}>
-					<h4 className='title'>REGISTER FORM</h4>
-					<div className='mb-3'>
-						<input
-							type='text'
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							className='form-control'
-							id='exampleInputEmail1'
-							placeholder='Enter Your Name'
-							required
-							autoFocus
-						/>
-					</div>
+					<h4 className='title'>LOGIN FORM</h4>
+					<div className='mb-3'></div>
 					<div className='mb-3'>
 						<input
 							type='email'
@@ -78,30 +65,9 @@ const Register = () => {
 							required
 						/>
 					</div>
-					<div className='mb-3'>
-						<input
-							type='text'
-							value={phone}
-							onChange={(e) => setPhone(e.target.value)}
-							className='form-control'
-							id='exampleInputEmail1'
-							placeholder='Enter Your Phone'
-							required
-						/>
-					</div>
-					<div className='mb-3'>
-						<input
-							type='text'
-							value={address}
-							onChange={(e) => setAddress(e.target.value)}
-							className='form-control'
-							id='exampleInputEmail1'
-							placeholder='Enter Your Address'
-							required
-						/>
-					</div>
+
 					<button type='submit' className='btn btn-primary'>
-						REGISTER
+						LOGIN
 					</button>
 				</form>
 			</div>
@@ -109,4 +75,4 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default Login;

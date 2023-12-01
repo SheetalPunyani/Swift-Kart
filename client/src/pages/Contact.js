@@ -1,6 +1,6 @@
 //making this also fntional component by rafce.react arrow fn. with export (rafce) is a shortcut to create a functional component.
 import React from "react";
-import Layout from "./../components/Layout/Layout";
+import Layout from "../components/Layout/Layout";
 import { BiMailSend, BiPhoneCall, BiSupport } from "react-icons/bi";
 // import { Helmet } from "react-helmet";
 const Contact = () => {
