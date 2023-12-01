@@ -15,7 +15,7 @@ const Header = () => {
 			token: null,
 		}); //setAuth m remove krenge user&token baki as it is rheg. then loclal storage clear bcz phle local storage cler kr to page refresh hht h.
 		localStorage.removeItem("auth");
-		toast.success("Logged out successfully");
+		toast.success("Logged out successfully ok");
 	};
 	return (
 		<>
