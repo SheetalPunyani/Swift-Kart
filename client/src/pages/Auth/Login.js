@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../styles/AuthStyles.css";
 import { useAuth } from "../../Context/auth";
@@ -10,7 +10,7 @@ const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [auth, setAuth] = useAuth();
-
+	const location = useLocation();
 	const navigate = useNavigate();
 	// login m srif email and password usehoga.
 	const handleSubmit = async (e) => {
@@ -28,7 +28,7 @@ const Login = () => {
 				setAuth({ ...auth, user: res.data.user, token: res.data.token });
 				//using localstorage to store the info after login(after refreshed the page the user should be logged in)
 				localStorage.setItem("auth", JSON.stringify(res.data));
-				navigate("/");
+				navigate(location.state || "/");
 			} else {
 				toast.error(res.data.message);
 			}

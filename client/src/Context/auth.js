@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext, createContext } from "react";
+import axios from "axios";
 // we are creating context api(like redux toolkit api)-The Context API is a part of the React library and provides a way to pass data through the component tree without having to pass props down manually at every level. It's particularly useful for sharing global data, such as themes or authentication status, across components.
 // we are creating a global state to change the state of the if login to show logiut and remove the login register button.
 //create context ki use se context create krnege and jaha bhi context use krna h  useContext hook use krlng.
@@ -16,20 +17,23 @@ const AuthProvider = ({ children }) => {
 		token: "",
 	});
 	//accesiing the localstorage to get the data of the user at initial time tbhi ek page pr continue stay krpyng.to do this using useeffect hook.
-	useEffect(
-		() => {
-			const data = localStorage.getItem("auth");
-			if (data) {
-				const parseData = JSON.parse(data);
-				setAuth({
-					...auth, //to keep the previous data in auth as it is use ...auth.and then user or token ko fulfill kreng.
-					user: parseData.user,
-					token: parseData.token,
-				});
-			}
-		},
-		[auth] //dependency array m auth pss krng.
-	);
+
+	//setting default axios property.
+
+	axios.defaults.headers.common["Authorization"] = auth?.token; //agr token h to hi set kreng. otherwise error aayega."];
+
+	useEffect(() => {
+		const data = localStorage.getItem("auth");
+		if (data) {
+			const parseData = JSON.parse(data);
+			setAuth({
+				...auth, //to keep the previous data in auth as it is use ...auth.and then user or token ko fulfill kreng.
+				user: parseData.user,
+				token: parseData.token,
+			});
+		}
+		//eslient-disable-next-line
+	}, []);
 	return (
 		<AuthContext.Provider value={[auth, setAuth]}>
 			{/* jo bhi state h humare pass usko access krna h to value pass karyenge provider k ander auth &setauth to use khi bhi use krskteh.*/}

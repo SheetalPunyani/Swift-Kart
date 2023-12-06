@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const Header = () => {
 	const [auth, setAuth] = useAuth(); //useAuth m se get kreg.
-	const handlelogut = () => {
+	const handelLogout = () => {
 		setAuth({
 			...auth,
 			user: null,
@@ -35,7 +35,6 @@ const Header = () => {
 					<div className='collapse navbar-collapse' id='navbarTogglerDemo01'>
 						<Link to='/' className='navbar-brand'>
 							<GiShoppingBag /> Swift-Kart
-							{/* 🛒 */}
 						</Link>
 						<ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
 							<li className='nav-item'>
@@ -48,7 +47,7 @@ const Header = () => {
 									Category
 								</NavLink>
 							</li>
-							{!auth.user ? (
+							{!auth?.user ? (
 								<>
 									<li className='nav-item'>
 										<NavLink to='/register' className='nav-link'>
@@ -62,15 +61,40 @@ const Header = () => {
 									</li>
 								</>
 							) : (
-								<li className='nav-item'>
-									<NavLink
-										onClick={handlelogut}
-										to='/login'
-										className='nav-link'
-									>
-										LOGUT
-									</NavLink>
-								</li>
+								<>
+									<li className='nav-item dropdown'>
+										<NavLink
+											className='nav-link dropdown-toggle'
+											href='#'
+											role='button'
+											data-bs-toggle='dropdown'
+											aria-expanded='false'
+										>
+											{auth?.user?.name}
+										</NavLink>
+										<ul className='dropdown-menu'>
+											<li>
+												<NavLink
+													to={`/dashboard/${
+														auth?.user?.role === 1 ? "admin" : "user"
+													}`}
+													className='dropdown-item'
+												>
+													Dashboard
+												</NavLink>
+											</li>
+											<li>
+												<NavLink
+													onClick={handelLogout}
+													to='/login'
+													className='dropdown-item'
+												>
+													Logout
+												</NavLink>
+											</li>
+										</ul>
+									</li>
+								</>
 							)}
 							<li className='nav-item'>
 								<NavLink to='/cart' className='nav-link'>
